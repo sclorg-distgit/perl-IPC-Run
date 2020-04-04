@@ -2,7 +2,7 @@
 
 Name:           %{?scl_prefix}perl-IPC-Run
 Version:        20180523.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Perl module for interacting with child processes
 # the rest:                     GPL+ or Artistic
 # The Win32* modules are not part of the binary RPM package
@@ -75,7 +75,7 @@ rm -f t/win32_*
 sed -i -e '/^t\/win32_.*/d' MANIFEST
 
 # Fix shellbangs
-%{?scl:scl enable %{scl} '}for file in eg/run_daemon abuse/timers abuse/blocking_debug_with_sub_coprocess ; do perl -MConfig -pi -e %{?scl:'"}'%{?scl:"'}s,^#!.*/perl,$Config{startperl}, if ($. == 1)%{?scl:'"}'%{?scl:"'} "$file"; done%{?scl:'}
+%{?scl:scl enable %{scl} '}for file in eg/* abuse/*; do perl -MConfig -pi -e %{?scl:'"}'%{?scl:"'}s,^#!.*/perl,$Config{startperl}, if ($. == 1)%{?scl:'"}'%{?scl:"'} "$file"; done%{?scl:'}
 
 %build
 %{?scl:scl enable %{scl} '}perl Makefile.PL INSTALLDIRS=vendor && make %{?_smp_mflags}%{?scl:'}
@@ -99,6 +99,9 @@ find %{buildroot} -type f -name .packlist -delete
 %{_mandir}/man3/IPC::Run::Timer.3*
 
 %changelog
+* Thu Mar 26 2020 Petr Pisar <ppisar@redhat.com> - 20180523.0-8
+- Normalize all shebangs (bug #1817388)
+
 * Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 20180523.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
